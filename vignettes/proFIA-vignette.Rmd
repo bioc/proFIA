@@ -1,7 +1,7 @@
 ---
-title: "*proFIA*: Preprocessing data from flow injection analysis coupled to 
+title: "*proFIA*: Preprocessing data from flow injection analysis coupled to
 high-resolution mass spectrometry (FIA-HRMS)"
-author: "Alexis Delabriere and Eteinne Thevenot"
+author: "Alexis Delabriere and Etienne Thevenot"
 date: "`r Sys.Date()`"
 
 vignette: >
@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 bibliography: "proFIA-vignette.bib"
-output: 
+output:
   BiocStyle::html_document
 ---
 
@@ -26,7 +26,7 @@ matrix effect which makes their processing difficult. The _**proFIA**_
 bioconductor package provides the first workflow to process FIA-HRMS raw data
 and generate the peak table. By taking into account the high resolution and the
 information of matrix effect available from multiple scans, the algorithms are
-robust and provide maximum information about ions m/z and intensitie using the 
+robust and provide maximum information about ions m/z and intensitie using the
 full capapbility of modern mass spectrometers.
 
 # Workflow
@@ -80,7 +80,7 @@ in mind are:
 
 * `noiseEstimation` (logical): shall noise model be constructed to filter
   signal? (recommended).
-  
+
 * `ppm` (numeric): maximum deviation between scans during strips detection.
 
 * `parallel` (logical): shall parallel computation be used.
@@ -100,7 +100,7 @@ ppm <- 3
 plasSet <- proFIAset(path, ppm=ppm, parallel=FALSE)
 ```
 
-The quality of peak detection can be assessed by using the `plotRaw` method to 
+The quality of peak detection can be assessed by using the `plotRaw` method to
 visualize the corresponding areas in the raw data.
 
 ```{r raw_plot}
@@ -142,7 +142,7 @@ to the corresponding value in `proFIAset`,
 
 * `fracGroup` (numeric): minimum fraction of samples with detected peaks in at
 least one class for a group to be created.
-  
+
 ```{r group,message=FALSE}
 # selecting the parameters
 ppmgroup <- 1
@@ -154,10 +154,10 @@ fracGroup <- 0.2
 plasSet <- group.FIA(plasSet, ppm=ppmgroup, fracGroup=fracGroup)
 ```
 
-The groups may be visualized using the **plotEICs** function, which take as input a mass and a ppm tolerance, or an index.		
+The groups may be visualized using the **plotEICs** function, which take as input a mass and a ppm tolerance, or an index.
 
 ```{r plotEICs}
-#plotting the EICs of the parameters.		
+# plotting the EICs of the parameters.
 plotEICs(plasSet,mz=plasMols[4,"mass_M+H"])
 ```
 
@@ -165,14 +165,14 @@ At this stage, it is possible to check whether a molecule (i.e., a group) has
 been detected in the dataset by using the `findMzGroup` method.
 
 ```{r find_group}
-# Searching for match group with 2 ppm tolerance
+# searching for match group with 2 ppm tolerance
 lMatch <- findMzGroup(plasSet,plasMols[,"mass_M+H"],tol=3)
 
 # index of the 40 molecules which may be used with plotEICs
 molFound <- data.frame(names=plasMols[,"names"],found=lMatch)
 head(molFound)
 
-#Getting the molecules which are not detected
+# getting the molecules which are not detected
 plasMols[which(is.na(lMatch)),]
 ```
 We see that molecules 5 and 16 were not found, which is coherent with their
@@ -207,11 +207,11 @@ Here you see a warning because doing 1-Nearest-Neighbour is a bad partice, but f
 
 ## Running the whole workflow with `analyzeAcquisitionFIA`
 
-The whole workflow described previously can be run by a single call to the 
+The whole workflow described previously can be run by a single call to the
 *analyzeAcquisitionFIA* function:
 
 ```{r analyzeAcquisitionFIA, eval=FALSE}
-#selecting the parameters
+# selecting the parameters
 ppm <- 2
 ppmgroup <- 1
 fracGroup <- 0.2
@@ -238,17 +238,18 @@ bioconductor package).
 [Workflow4metabolomics](http://workflow4metabolomics.org) format.
 
 ```{r export}
-#Expression Set.
+# Expression Set.
 eset <- exportExpressionSet(plasSet)
 eset
 
-#Peak Table.
-pt <- exportPeakTable(plasSet)
+# Peak Table.
+peakTable <- exportPeakTable(plasSet)
 
 
-#3 Tables:
-dm <- exportDataMatrix(plasSet)
-vm <- exportVariableMetadata(plasSet)
+# 3 W4M Tables:
+dataMatrix <- exportDataMatrix(plasSet)
+sampleMetadata <- exportSampleMetadata(plasSet)
+variableMetadata <- exportVariableMetadata(plasSet)
 ```
 
 ## Examples of downstream statistical analyzes
@@ -260,44 +261,55 @@ with Orthogonal Partial Least Squares, by using the
 bioconductor package. This allows us to illustrate the efficiency of the
 matrix effect indicator.
 
-```{r multivariate}
-library(ropls)
-
+```{r conc}
+# getting the concentrations of the spiked compounds (log10 scale)
 data("plasSamples")
-vconcentration <- plasSamples[,"concentration_ng_ml"]
-#vconcentration=(c(100,100,1000,1000,10000,10000)*10^-10)
-peakTable <- exportPeakTable(plasSet,mval="zero")
-
-###Cutting the useless column
-dataMatrix <- peakTable[,1:nrow(phenoClasses(plasSet))]
-
-
+vconc <- log10(plasSamples[,"concentration_ng_ml"])
+```
+```{r opls, eval=FALSE}
+# building the OPLS model
+library(ropls)
+plasSet.opls <- opls(dataMatrix, vconc, predI = 1, orthoI = NA, log10L = TRUE, crossvalI=5)
+```
+```{r opls_eval, echo=FALSE}
+# building the OPLS model
+library(ropls)
+plasSet.opls <- opls(t(dataMatrix), vconc, predI = 1, orthoI = NA, log10L = TRUE, crossvalI=5, plotL = FALSE)
+layout(matrix(1:4, nrow = 2, byrow = TRUE))
+for(typeC in c("permutation", "overview", "outlier", "x-score"))
+plot(plasSet.opls, typeVc = typeC, parDevNewL = FALSE)
 ```
 
-```{r plot_summary_opls, echo=FALSE}
-plasSet.opls <- opls(t(dataMatrix),log10(vconcentration),predI = 1,log10L = TRUE, orthoI = NA, devNewL = FALSE,crossvalI=5)
-```
-```{r plot_summary_opls_h, eval=FALSE}
-plasSet.opls <- opls(t(peakTable),scale(log10(vconcentration)),predI = 1,log10L = TRUE, orthoI = NA)
-```
-As the variance explained Q2 is close to 0.8, so the fitted model explains the majority of the variance. The score plot and the observation diagnostic show that there as no aberrant deviation between samples. As the compounds are spiked with an increasing concentration of chemicals, this should be visible of the first components. The second effect affecting the experiment is the matrix effect. We expect the second compoennts of the model to represent suppressed peaks. We can easely see this by checking the VIP on the main components versus vip on the orthogonal component :
+We observe that the model significantly explains the majority of the
+response variance (Q2Y > 0.94, pQ2Y < 5%). The score plot and the
+observation diagnostic do not evidence any outlier sample (not
+shown). As expected, the concentration of the samples increases with the predictive scores. Furthermore, the matrix effect contributes
+to the orthogonal component: this can be observed by plotting the
+predictive and orthogonal VIP values, and coloring according to the
+matrix effect metric (inversely proportional to the 'corMean' quality metric of the peak):
 ```{r matrix_effect_plot}
-matEfInd <- peakTable$corMean
-nnaVl <- !is.na(matEfInd)
-matEfInd <- matEfInd[nnaVl]
-ordVi <- order(matEfInd)
-matEfInd <- matEfInd[ordVi]
-vipVn <- getVipVn(plasSet.opls)[nnaVl]
-orthoVipVn <- getVipVn(plasSet.opls, orthoL = TRUE)[nnaVl]
-colVc <- rev(rainbow(sum(nnaVl), end = 4/6))
-plot(vipVn[ordVi], orthoVipVn[ordVi], pch = 16, col = colVc,
-     xlab = "VIP", ylab = "VIP_ortho", main = "VIP_ortho vs VIP.",lwd=3)
+# matrix effec metric
+MEmetricVn <- 1 - variableMetadata[, "corMean"]
+nnaVl <- !is.na(MEmetricVn)
+MEmetricVn <- MEmetricVn[nnaVl]
+ordVi <- order(MEmetricVn)
+MEmetricVn <- MEmetricVn[ordVi]
 
-##Adding the point corresponding to samples.
-points(getVipVn(plasSet.opls)[lMatch],getVipVn(plasSet.opls, orthoL = TRUE)[lMatch], cex=1.2,pch=1,col="black",lwd=2)
-legend("topright", legend = c(round(rev(range(matEfInd)), 2),"Spiked molecules."), pch=c(16,16,1),col = c(rev(colVc[c(1, length(colVc))]),1))
+# predictive and orthogonal VIP
+vipVn <- getVipVn(plasSet.opls)[nnaVl][ordVi]
+orthoVipVn <- getVipVn(plasSet.opls, orthoL = TRUE)[nnaVl][ordVi]
+
+# plot
+colVc <- rev(rainbow(sum(nnaVl), end = 4/6))
+plot(vipVn, orthoVipVn, pch = 16, col = colVc,
+     xlab = "VIP_pred", ylab = "VIP_ortho", main = "VIP_ortho vs VIP_pred",lwd=3)
+
+# adding black circles around spiked compounds
+matchVl <- (1:nrow(variableMetadata) %in% lMatch[!is.na(lMatch)])[nnaVl][ordVi]
+points(vipVn[matchVl], orthoVipVn[matchVl], cex=1.2,pch=1,col="black",lwd=2)
+legend("topright", legend = c(paste0(c("ME max: ", "ME min: "), round(rev(range(MEmetricVn)), 2)),"Spiked molecules"), pch=c(16,16,1),col = c(rev(colVc[c(1, length(colVc))]),1))
 ```
-We see that the VIP of the first component are high when matrix effect is reduced and especially high for spiked molecules. The second axes seems to represent matrix effect. This illustrate the capacity of proFIA to extract interesting signal from raw data and to provides usefull visualisation to assess the quality of the data. The two clusters are probably caused by molecules naturally present in the plasma and molecules not present in the plasma.
+We see that high predictive VIP values correspond to low matrix effect (which is in particular the case for the spiked molecules; the two clusters probably result from the fact that some of the spiked molecules are naturally present in plasma). In contrast, the orthogonal VIP axis correlates with the matrix effect. This illustrates the capacity of proFIA to extract relevant signal from raw data and to provide useful visualization to assess the quality of the data. 
 
 
 # Session info

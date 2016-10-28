@@ -1,29 +1,7 @@
-CHANGES IN VERSION 0.99.1
+CHANGES IN VERSION 1.0.10
 ------------------------------
-PACKAGE MODIFICATION
 
-    o Modified some Tests
-    o Visualisation added	
+BUG CORRECTION
 
-CHANGES IN VERSION 0.98.4
-------------------------------
-PACKAGE MODIFICATION
-
-    o Package compilation OK
-
-CHANGES IN VERSION 0.98.2
-------------------------------
-PACKAGE MODIFICATION
-
-    o New approach approach for peak detection (geometric instead of wavelets)
-    o Better regression for noise estimation
-    o Debuggued pvalues calculation
-    o Some work on grouping but not finished.
-
-CHANGES IN VERSION 0.98.1
-------------------------------
-PACKAGE MODIFICATION
-
-    o New approach for noise estimation
-	
-
+    o Ids of data matrix are duplicated and extended if needed
+    o Correction of a bug in acquisitionDirectory
