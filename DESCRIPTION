@@ -1,7 +1,7 @@
 Package: proFIA
 Type: Package
 Title: Preprocessing of FIA-HRMS data
-Version: 1.17.0
+Version: 1.17.1
 Date: 2016-06-06
 Author: Alexis Delabriere and Etienne Thevenot.
 Maintainer: Alexis Delabriere <alexis.delabriere@outlook.fr>
@@ -54,3 +54,5 @@ Collate:
     'findPeaksFIA.R'
     'methodsContainer.R'
     'proFIA-package.R'
+    'zzz.R'
+PackageStatus: Deprecated
