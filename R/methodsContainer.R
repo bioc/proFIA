@@ -343,6 +343,7 @@ proFIAset <-
                 openAndFindPeaks,
                 simplify = FALSE,
                 ppm = ppm,
+                f = f,
                 es = pFIA@noiseEstimation,
                 ... =
                     ...

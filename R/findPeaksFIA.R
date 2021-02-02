@@ -1247,10 +1247,21 @@ determiningInjectionZoneFromTIC <-
            scanmax = NULL,
            graphical = TRUE) {
     
-  if(is.null(scanmin)) scanmin <- 1
-  if(is.null(scanmax)) scanmax <- length(xraw@tic)
-  time <- xraw@scantime[scanmin:scanmax]
-  obs <- xraw@tic[scanmin:scanmax]
+  if(!isS4(xraw)){
+    time <- xraw$scan
+    obs <- xraw$intensity
+    if(is.null(scanmax)) scanmax <- length(obs)
+    if(is.null(scanmin)) scanmin <- 1
+    
+  }else{
+    time <- xraw@scantime
+    obs <- xraw@tic
+    if(is.null(scanmax)) scanmax <- length(obs)
+    if(is.null(scanmin)) scanmin <- 1
+  }
+
+  time <- time[scanmin:scanmax]
+  obs <- obs[scanmin:scanmax]
   
   mu_init <- time[which.max(obs)]
   sd_init <- 0.5
