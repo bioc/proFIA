@@ -2,6 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
+vignettes/figures/*
 src/*.o
 src/*.so
 src/*.dll
