@@ -4,8 +4,13 @@
 \alias{determiningInjectionZone}
 \title{First guess of the limit of the injection peak.}
 \usage{
-determiningInjectionZone(xraw, threshold = 0.05, graphical = FALSE,
-  scanmin = NULL, scanmax = NULL)
+determiningInjectionZone(
+  xraw,
+  threshold = 0.05,
+  graphical = FALSE,
+  scanmin = NULL,
+  scanmax = NULL
+)
 }
 \arguments{
 \item{xraw}{An xcmsRaw object as returned by \code{\link[xcms]{xcmsRaw}}. It may also be

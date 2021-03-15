@@ -4,8 +4,18 @@
 \alias{estimateNoiseMS}
 \title{Estimate the noise of a mass spectrometer using multiple MS acquisition.}
 \usage{
-estimateNoiseMS(list_files, ppm, nBin = 500, minInt = 500, maxInt = 10^8,
-  parallel, includeZero = TRUE, dmz = 5e-04, BPPARAM = NULL)
+estimateNoiseMS(
+  list_files,
+  ppm,
+  nBin = 500,
+  minInt = 500,
+  maxInt = 10^8,
+  f = c("TIC", "regression"),
+  parallel,
+  includeZero = TRUE,
+  dmz = 5e-04,
+  BPPARAM = NULL
+)
 }
 \arguments{
 \item{list_files}{A list of files in which the noise should be estimated.}
@@ -18,6 +28,8 @@ will also be used to fuse the bands if there are close enough.}
 \item{minInt}{The  minimum intensity expected in all the files.}
 
 \item{maxInt}{The  maximum intensity expected in all the files.}
+
+\item{f}{Which method should be used to find the injection peaks. Should be 'TIC' or'regression'}
 
 \item{parallel}{Shall parrallelism be used.}
 

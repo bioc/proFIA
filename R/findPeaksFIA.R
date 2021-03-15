@@ -127,7 +127,7 @@ fuseRange <- function(r1, r2, extend = TRUE) {
 #' @param scanmax The last scan to consider.
 #' @param bandCoverage A filter on the number of point found in a band. 0.3 by default to allow matrix
 #' effect.
-#' @param shiftFactor
+#' @param shiftFactor shiftFactor constant used to determine if a signal is shift.
 #' @param sizeMin The minimum number of point considered for a band to be considred for solvent filtration.
 #' @param bandlist An optional bandlist to be passed.
 #' @param ... more arguments to be passed to the \link{determiningInjectionZone} function.
@@ -137,7 +137,7 @@ fuseRange <- function(r1, r2, extend = TRUE) {
 #'     \item mzmax the maximum value of the mass traces in the m/z dimension.
 #'     \item scanMin the first scan on which the signal is detected.
 #'     \item scanMax the last scan on which the signal is detected.
-#'     \item areaIntensity the integrated area of the signal.
+#'     \item areaIntensity the integrated area of the signal.o
 #'     \item maxIntensity the maximum intensity of the signal.
 #'     \item solventIntensity the intensity of the solvent, 0 means that no significant
 #'     solvent was detected.

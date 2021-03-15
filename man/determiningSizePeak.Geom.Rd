@@ -5,9 +5,16 @@
 \alias{determiningSizePeak}
 \title{Determine the limits of the injection peak in a FIA acquisition.}
 \usage{
-determiningSizePeak.Geom(xraw, scanmin = 1, scanmax = length(xraw@scantime),
-  freq = 0.15, graphical = FALSE, smooth = TRUE, extended = FALSE,
-  percentSol = NULL)
+determiningSizePeak.Geom(
+  xraw,
+  scanmin = 1,
+  scanmax = length(xraw@scantime),
+  freq = 0.15,
+  graphical = FALSE,
+  smooth = TRUE,
+  extended = FALSE,
+  percentSol = NULL
+)
 }
 \arguments{
 \item{xraw}{An xcmsRaw object as returned by \code{\link[xcms]{xcmsRaw}}.}

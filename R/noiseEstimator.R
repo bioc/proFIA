@@ -488,6 +488,7 @@ estimateNoiseFile <-
 #' @param nBin The number of intensity bins to be used.
 #' @param minInt The  minimum intensity expected in all the files.
 #' @param maxInt The  maximum intensity expected in all the files.
+#' @param f Which method should be used to find the injection peaks. Should be 'TIC' or'regression'
 #' @param includeZero Should the left bin start a 0.
 #' @param parallel Shall parrallelism be used.
 #' @param BPPARAM A BiocParallelParam object to be used for parallelism

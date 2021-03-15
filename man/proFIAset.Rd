@@ -4,8 +4,16 @@
 \alias{proFIAset}
 \title{Process FIA experiment.}
 \usage{
-proFIAset(path, ppm, parallel = TRUE, BPPARAM = NULL,
-  noiseEstimation = TRUE, graphical = FALSE, ...)
+proFIAset(
+  path,
+  ppm,
+  parallel = TRUE,
+  BPPARAM = NULL,
+  noiseEstimation = TRUE,
+  f = c("regression", "TIC"),
+  graphical = FALSE,
+  ...
+)
 }
 \arguments{
 \item{path}{The path of the files to be processed.}

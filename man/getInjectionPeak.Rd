@@ -4,9 +4,18 @@
 \alias{getInjectionPeak}
 \title{Fit an injection peak to an FIA acquisition.}
 \usage{
-getInjectionPeak(xraw, bandlist, sec = 2, iquant = 0.95, gpeak = NULL,
-  selIndex = NULL, scanmin = 1, scanmax = length(xraw@scantime),
-  refinement = TRUE, graphical = FALSE)
+getInjectionPeak(
+  xraw,
+  bandlist,
+  sec = 2,
+  iquant = 0.95,
+  gpeak = NULL,
+  selIndex = NULL,
+  scanmin = 1,
+  scanmax = length(xraw@scantime),
+  refinement = TRUE,
+  graphical = FALSE
+)
 }
 \arguments{
 \item{xraw}{An xcmsRaw object as returned by \code{\link[xcms]{xcmsRaw}}.}

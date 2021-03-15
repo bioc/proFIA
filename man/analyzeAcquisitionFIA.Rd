@@ -4,10 +4,21 @@
 \alias{analyzeAcquisitionFIA}
 \title{Wrapper function for the full FIA analysis workflow.}
 \usage{
-analyzeAcquisitionFIA(path, ppm, dmz = 0.001, fracGroup = 0.5,
-  ppmGroup = NULL, dmzGroup = 5e-04, parallel = FALSE, bpparam = NULL,
-  noiseEstimation = TRUE, SNT = NULL, maxo = FALSE,
-  imputation = c("KNN_TN", "randomForest", "None"), ...)
+analyzeAcquisitionFIA(
+  path,
+  ppm,
+  dmz = 0.001,
+  fracGroup = 0.5,
+  ppmGroup = NULL,
+  dmzGroup = 5e-04,
+  parallel = FALSE,
+  bpparam = NULL,
+  noiseEstimation = TRUE,
+  SNT = NULL,
+  maxo = FALSE,
+  imputation = c("KNN_TN", "randomForest", "None"),
+  ...
+)
 }
 \arguments{
 \item{path}{The path to the directory of acquistion.}

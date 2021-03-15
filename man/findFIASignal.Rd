@@ -5,12 +5,26 @@
 \alias{findPeaks}
 \title{Detect peaks in an FIA acquisition.}
 \usage{
-findFIASignal(xraw, ppm, es = NULL, solvar = c("throw", "keep"),
-  solint = c("poly", "substract", "add"), fullInteg = FALSE, dmz = 0.001,
-  graphical = FALSE, SNT = NULL, f = c("regression", "TIC"),
-  pvalthresh = NULL, scanmin = 1, scanmax = length(xraw@scantime),
-  bandCoverage = 0.3, shiftFactor = 0.3, sizeMin = NULL,
-  bandlist = NULL, ...)
+findFIASignal(
+  xraw,
+  ppm,
+  es = NULL,
+  solvar = c("throw", "keep"),
+  solint = c("poly", "substract", "add"),
+  fullInteg = FALSE,
+  dmz = 0.001,
+  graphical = FALSE,
+  SNT = NULL,
+  f = c("regression", "TIC"),
+  pvalthresh = NULL,
+  scanmin = 1,
+  scanmax = length(xraw@scantime),
+  bandCoverage = 0.3,
+  shiftFactor = 0.3,
+  sizeMin = NULL,
+  bandlist = NULL,
+  ...
+)
 }
 \arguments{
 \item{xraw}{An xcmsRaw object as returned by \code{\link[xcms]{xcmsRaw}}.}
@@ -58,6 +72,8 @@ a noise model is provided.}
 \item{bandCoverage}{A filter on the number of point found in a band. 0.3 by default to allow matrix
 effect.}
 
+\item{shiftFactor}{shiftFactor constant used to determine if a signal is shift.}
+
 \item{sizeMin}{The minimum number of point considered for a band to be considred for solvent filtration.}
 
 \item{bandlist}{An optional bandlist to be passed.}
@@ -71,7 +87,7 @@ A numeric matrix with the following column
     \item mzmax the maximum value of the mass traces in the m/z dimension.
     \item scanMin the first scan on which the signal is detected.
     \item scanMax the last scan on which the signal is detected.
-    \item areaIntensity the integrated area of the signal.
+    \item areaIntensity the integrated area of the signal.o
     \item maxIntensity the maximum intensity of the signal.
     \item solventIntensity the intensity of the solvent, 0 means that no significant
     solvent was detected.

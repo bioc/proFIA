@@ -19,7 +19,7 @@
 #' @importFrom methods new
 #' @importFrom stats aggregate coef convolve cor density
 #'          dnorm lm loess median nextn pnorm sd
-#'          predict quantile t.test integrate na.omit
+#'          predict quantile t.test integrate na.omit dexp
 #' @importFrom utils combn object.size write.table
 #' @importFrom xcms xcmsRaw plotTIC rawEIC plotRaw peaks
 #' @importFrom Biobase AnnotatedDataFrame ExpressionSet
